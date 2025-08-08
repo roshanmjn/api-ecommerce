@@ -1,0 +1,46 @@
+
+networks:
+  booking-network:
+    driver: bridge
+    external: true
+
+services:
+#   booking:
+#     container_name: booking-service
+#     image: booking-service
+#     build:
+#       context: .
+#       network: host
+#     ports:
+#       - 8888:9000
+#     command: composer install
+#     volumes:
+#       - .:/var/www/html
+#     working_dir: /var/www/html
+#     networks:
+#       - booking-network
+
+  # booking_redis:
+  #   container_name: booking-redis
+  #   image: redis
+  #   ports:
+  #     - "6385:6379"
+  #   networks:
+  #     - booking-network
+
+  booking_pgsql:
+    container_name: booking-pgsql
+    image: postgres:14.6
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=white_room
+    volumes:
+      - booking-postgres-data:/var/lib/postgresql/data
+    networks:
+      - booking-network
+volumes:
+  booking-postgres-data:
+    # driver: local
