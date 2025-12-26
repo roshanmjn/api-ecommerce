@@ -82,8 +82,12 @@ class PermissionController extends Controller
     public function assignPermissionToRole(Request $request, string $id)
     {
         $role = is_numeric($id)
-            ? Role::findOrFail($id)
-            : Role::where('name', $id)->firstOrFail();
+            ? Role::find($id)
+            : Role::where('name', $id)->first();
+
+        if (!$role) {
+            throw new NotFoundHttpException("Role not found");
+        }
 
         $request->validate([
             'permissions' => 'required|array',

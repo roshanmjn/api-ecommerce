@@ -1,24 +1,21 @@
-
 networks:
   booking-network:
     driver: bridge
     external: true
 
 services:
-#   booking:
-#     container_name: booking-service
-#     image: booking-service
-#     build:
-#       context: .
-#       network: host
-#     ports:
-#       - 8888:9000
-#     command: composer install
-#     volumes:
-#       - .:/var/www/html
-#     working_dir: /var/www/html
-#     networks:
-#       - booking-network
+  # app:
+  #   container_name: booking-service
+  #   build:
+  #     context: .
+  #     network: host
+  #   ports:
+  #     - 8888:9000
+  #   # command: composer install
+  #   volumes:
+  #     - .:/var/www/html
+  #   working_dir: /var/www/html
+  #   network_mode: "host"
 
   # booking_redis:
   #   container_name: booking-redis
@@ -28,19 +25,36 @@ services:
   #   networks:
   #     - booking-network
 
-  booking_pgsql:
-    container_name: booking-pgsql
-    image: postgres:14.6
+  # booking_pgsql:
+  #   container_name: booking-pgsql
+  #   image: postgres:14.6
+  #   ports:
+  #     - 5434:5432
+  #   environment:
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_DB=white_room
+  #   volumes:
+  #     - booking-postgres-data:/var/lib/postgresql/data
+  #   networks:
+  #     - booking-network
+
+  booking_mysql:
+    container_name: booking-mysql
+    image: mariadb:10.3
     ports:
-      - 5434:5432
+      - 3307:3306
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=white_room
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=white_room
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
     volumes:
-      - booking-postgres-data:/var/lib/postgresql/data
+      - booking-mysql-data:/var/lib/mysql
     networks:
       - booking-network
+
 volumes:
-  booking-postgres-data:
+  # booking-postgres-data:
     # driver: local
+  booking-mysql-data:

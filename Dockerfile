@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
 RUN apt-get clean && apt-get update && \
-	apt-get install -y libzip-dev iputils-ping wget redis-server
+	apt-get install -y libzip-dev iputils-ping wget redis-server mariadb-client
 
 
 RUN cat /etc/resolv.conf && curl https://github.com
@@ -12,7 +12,7 @@ RUN wget https://github.com/mlocati/docker-php-extension-installer/releases/late
 ENV IPE_GD_WITHOUTAVIF=1
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-	install-php-extensions @composer pgsql pdo_pgsql redis pcntl gd zip sockets
+	install-php-extensions @composer pgsql pdo_pgsql redis pcntl gd zip sockets pdo_mysql mysqli
 
 
 RUN groupadd -g 1000 www
